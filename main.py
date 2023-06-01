@@ -1,6 +1,7 @@
 import webbrowser
 
 import telebot
+from telebot import types
 
 token = '6195046886:AAGYJkewBHDNYH-jrZu-n6a-8-Wa9DYgvzk'
 bot = telebot.TeleBot(token)
@@ -8,7 +9,17 @@ bot = telebot.TeleBot(token)
 # Обробка вхідних даних, у прикладі вивід тексту якщо клієнт присилає фото
 @bot.message_handler(content_types=['photo', 'audio'])
 def get_photo(message):
-    bot.reply_to(message, 'Very nice photo')
+    #Додавання кнопок
+    markup = types.InlineKeyboardMarkup()
+    button_1 = types.InlineKeyboardButton('Go to website', url='http://chat.openai.com/?model=text-davinci-002-render-sha')
+    markup.row(button_1)
+    button_2 = types.InlineKeyboardButton('Delete photo', callback_data='delete')
+    button_3 = types.InlineKeyboardButton('Edit photo', callback_data='edit')
+    markup.row(button_2, button_3)
+
+    bot.reply_to(message, 'Very nice photo', reply_markup=markup)
+
+
 
 
 # Відправка користувача на сайт по команді /site або /website
